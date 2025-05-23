@@ -43,6 +43,19 @@ app.post('/api/verify', async (req, res) => {
         await new Promise(resolve => setTimeout(resolve, stepTimes[i]));
     }
 
+    // 1% chance of success
+    const isSuccess = Math.random() < 0.01;
+    if (isSuccess) {
+        return res.json({
+            success: true,
+            message: 'nice dude',
+            steps,
+            timestamp: new Date().toISOString(),
+            requestId: 'BDV-' + Math.random().toString(36).substr(2, 9).toUpperCase(),
+            processingTime: processingTime / 1000
+        });
+    }
+
     res.json({
         success: false,
         message: 'You are too small, try again when you are big.',
