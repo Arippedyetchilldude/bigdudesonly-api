@@ -44,7 +44,7 @@ app.post('/api/verify', async (req, res) => {
     }
 
     // 1% chance of success
-    const isSuccess = Math.random() < 1;
+    const isSuccess = true;
     if (isSuccess) {
         return res.json({
             success: true,
