@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Enable CORS for your frontend
 app.use(cors());
@@ -25,10 +25,23 @@ app.get('/api/visitors', (req, res) => {
 
 // Fake image verification endpoint
 app.post('/api/verify', async (req, res) => {
-    // Simulate processing time
+    // Simulate random processing steps and delays
+    const steps = [
+        'Analyzing Mass...',
+        'Calculating Density...',
+        'Verifying Volumen...'
+    ];
     const processingTime = Math.floor(Math.random() * (10000 - 4200) + 4200);
-    
-    await new Promise(resolve => setTimeout(resolve, processingTime));
+    const stepTimes = [
+        Math.floor(processingTime * 0.25),
+        Math.floor(processingTime * 0.35),
+        Math.floor(processingTime * 0.4)
+    ];
+
+    // Simulate step-by-step processing
+    for (let i = 0; i < steps.length; i++) {
+        await new Promise(resolve => setTimeout(resolve, stepTimes[i]));
+    }
 
     res.json({
         success: false,
@@ -38,6 +51,7 @@ app.post('/api/verify', async (req, res) => {
             width: 'insufficient',
             overall: 'not big enough'
         },
+        steps,
         timestamp: new Date().toISOString(),
         requestId: 'BDV-' + Math.random().toString(36).substr(2, 9).toUpperCase(),
         processingTime: processingTime / 1000
